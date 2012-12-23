@@ -1,0 +1,6 @@
+#name : #+begin_src ... ... #+end_src
+#group : 
+# --
+#+begin_src shell
+  $0
+#+end_src

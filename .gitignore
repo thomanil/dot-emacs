@@ -1,0 +1,12 @@
+thomanil.el
+extras/setup-textmate.el
+extras/setup-magit.el
+extras/yaml-mode.el
+elpa/*
+auto-save-list/*
+/src/org-mode/
+/readme.el
+/extras/goto-symbol.el
+/extras/setup-testing.el
+/extras/tags.el
+/extras/setup-keybindings.el

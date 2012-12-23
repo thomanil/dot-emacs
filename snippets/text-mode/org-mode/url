@@ -1,0 +1,4 @@
+#name : hyperlink
+#group :
+# --
+[ $0[${http://}][${text}]]

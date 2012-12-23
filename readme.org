@@ -1,0 +1,50 @@
+* My .emacs.d
+  
+  I'm using org-mode to write and maintain my Emacs(24) configuration.
+  This is based on (and initially forked off) a fantastic idea by my
+  friend Marius.  The actual elisp is extracted from these files on
+  startup by init.el, and the surrounding org-file structure of
+  headers and text makes it really easy to comment and structure the
+  setup well.
+ 
+  Note: See Marius' original take at
+  https://github.com/zmalltalker/dot-emacs for a more lengthy
+  descripton of the why and how of this setup.
+ 
+** Where are the .el files?
+   
+   You'll notice that this git repository doesn't include any .el
+   files, except init.el. In fact, you'll find that .gitignore
+   instructs Git to ignore several .el files.
+   
+** How does it work?
+
+   The .emacs.d/extras directory contains libraries/functionality in
+   org-mode files, which are compiled to elisp like this:
+
+#+BEGIN_EXAMPLE
+(setq org-custom-library-dir (expand-file-name "extras" dotfiles-dir))
+(mapc #'org-babel-load-file (directory-files org-custom-library-dir t "\\.org$"))
+#+END_EXAMPLE
+
+   This code will compile all .org files in the extras/ directory and
+   load them into Emacs. After these files have been loaded, the same
+   trick is applied to any .org files directly under ~/.emacs.d:
+
+#+BEGIN_EXAMPLE
+(mapc #'org-babel-load-file (directory-files dotfiles-dir t "\\.org$"))
+#+END_EXAMPLE
+
+** This happens, step by step
+
+   - I start emacs, and it will by convention load ~/.emacs.d/init.el
+   - init.el will load org-mode
+   - init.el will call org-babel-load-file for any .org files in extras/
+   - init.el will call org-babel-load-file for any .org files in
+     ~/.emacs.d. In fact, the file you're reading right now will have
+     a corresponding .el file. 
+   - I treat thomanil.org as my main configuration file. 
+
+#+begin_src emacs-lisp
+;; 
+#+end_src
