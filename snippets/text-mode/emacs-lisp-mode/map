@@ -1,0 +1,4 @@
+#name : -map
+# --
+(-map ${collection} (lambda (${element})
+	   $0

@@ -1,0 +1,5 @@
+#name : ert test template
+# --
+(ert-deftest ${testname} ()
+  "Should ${dosomething}"
+  $0
