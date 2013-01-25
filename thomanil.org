@@ -340,6 +340,13 @@ ffip is autoloaded when invoked the first time.
   '(add-to-list 'ffip-patterns "*.erb"))
 #+end_src
 
+** Clojure
+
+#+begin_src emacs-lisp
+(require 'clojure-mode)
+(require 'nrepl)
+#+end_src
+
 * Adjust basic look, feel & behavior of Emacs
 ** Use the pleasant, low-contrast Solarized color theme
    Emacs 24 has built-in theming support.
@@ -366,7 +373,7 @@ system ('sudo apt-get install ttf-inconsolata')
 
 #+begin_src emacs-lisp
 (set-default-font "Inconsolata")
-(set-face-attribute 'default nil :height 160)
+(set-face-attribute 'default nil :height 180)
 #+end_src
 
 ** Get rid of that big ugly toolbar
@@ -758,6 +765,21 @@ file etc for a new orgfile:
 
 (global-set-key (kbd "C-x t") 'ert-test-current-buffer)
 #+end_src
+
+** Check my twitter feed
+
+Using my tweetskim gem (gem install tweetskim) for this.
+
+#+begin_src emacs-lisp
+(defun tweets ()
+  (interactive)
+  (get-buffer-create "*tweets*")
+  (switch-to-buffer "*tweets*")
+  (erase-buffer)
+  (insert "My Twitter timeline (up to last 200 tweets)\n---\n\n")
+  (insert (shell-command-to-string "tweetskim -n 200 -m" )))
+#+end_src
+
 ** Convenience function to explicitly edit files as sudo
 
 #+begin_src emacs-lisp
@@ -814,4 +836,24 @@ Cargoculted from EmacsWiki at http://www.emacswiki.org/emacs/MoveText
 
 (global-set-key [M-up] 'move-text-up)
 (global-set-key [M-down] 'move-text-down)
+#+end_src
+** Add orgmode encryption support
+
+Enables encrypting org mode entries with gpg using "M-x
+org-encrypt-entry".
+
+#+begin_src shell
+#Generate like this:
+gpg --gen-key
+#List:
+gpg --list-keys
+# export it, then stick it somewhere safe:
+gpg --export-secret-keys -a  > gpg-private-key
+#+end_src
+
+Then set it up for my emacs config like so:
+
+#+begin_src emacs-lisp
+(require 'org-crypt)
+(setq org-crypt-key "thomas@kjeldahlnilsson.net")
 #+end_src
