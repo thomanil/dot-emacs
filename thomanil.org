@@ -567,12 +567,12 @@ Make updating my emacs config super low threshold.
 (defun lorem ()
   "Insert a lorem ipsum."
   (interactive)
-  (insert "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do "
-          "eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim"
-          "ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut "
-          "aliquip ex ea commodo consequat. Duis aute irure dolor in "
-          "reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla "
-          "pariatur. Excepteur sint occaecat cupidatat non proident, sunt in "
+  (insert "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do\n"
+          "eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim\n"
+          "ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut\n"
+          "aliquip ex ea commodo consequat. Duis aute irure dolor in\n"
+          "reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla\n"
+          "pariatur. Excepteur sint occaecat cupidatat non proident, sunt in\n"
           "culpa qui officia deserunt mollit anim id est laborum."))
 #+end_src
 ** Timetracking at my fingertips
@@ -771,13 +771,19 @@ file etc for a new orgfile:
 Using my tweetskim gem (gem install tweetskim) for this.
 
 #+begin_src emacs-lisp
+(defun goto-last-buffer ()
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) t)))
+
 (defun tweets ()
   (interactive)
   (get-buffer-create "*tweets*")
   (switch-to-buffer "*tweets*")
   (erase-buffer)
   (insert "My Twitter timeline (up to last 200 tweets)\n---\n\n")
-  (insert (shell-command-to-string "tweetskim -n 200 -m" )))
+  (insert (shell-command-to-string "tweetskim -n 200 -m | grep -v Avdi | grep -v Braithwaite | sed G | fold -sw 80" ))
+  (local-set-key [mouse-1] 'browse-url-at-mouse)
+  (local-set-key (kbd "q") 'goto-last-buffer))
 #+end_src
 
 ** Convenience function to explicitly edit files as sudo
