@@ -781,7 +781,7 @@ Using my tweetskim gem (gem install tweetskim) for this.
   (switch-to-buffer "*tweets*")
   (erase-buffer)
   (insert "new tweets\n---\n\n")
-  (insert (shell-command-to-string "tweetskim -n 200 -m | sed G | fold -sw 80" ))
+  (insert (shell-command-to-string "tweetskim -n 200 -m | grep -v Avdi | grep -v Braithwaite | sed G | fold -sw 80" ))
   (local-set-key [mouse-1] 'browse-url-at-mouse)
   (local-set-key (kbd "q") 'goto-last-buffer))
 #+end_src
