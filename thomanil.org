@@ -246,6 +246,8 @@ Quickly jump anywhere in buffer
 ** Ruby-mode
 #+begin_src emacs-lisp
   (require 'inf-ruby)
+
+  (setq ruby-deep-indent-paren nil)
 #+end_src
 ** RVM
     Use a usable ruby
@@ -373,7 +375,7 @@ system ('sudo apt-get install ttf-inconsolata')
 
 #+begin_src emacs-lisp
 (set-default-font "Inconsolata")
-(set-face-attribute 'default nil :height 180)
+(set-face-attribute 'default nil :height 160)
 #+end_src
 
 ** Get rid of that big ugly toolbar
@@ -498,6 +500,8 @@ however:
 (global-set-key (kbd "C-x l") 'kensei-start)
 (global-set-key (kbd "C-x ø") 'kensei-quit)
 (global-set-key (kbd "C-v") 'eval-buffer)
+(global-set-key (kbd "C-x p") 'persp-switch)
+
 
 #+end_src
 
@@ -539,6 +543,73 @@ terminal etc where meta keys are mapped/handled in unpredictable ways.
 #+begin_src emacs-lisp
 (define-key global-map (kbd "C-+") 'text-scale-increase)
 (define-key global-map (kbd "C--") 'text-scale-decrease)
+#+end_src
+
+* Perspectives
+
+Use perspective-mode to quickly set up/switch context between
+different tasks/projects - somewhat akin to perspectives in Eclipse,
+only better!
+
+** setup the mode
+
+    Load it
+
+#+begin_src emacs-lisp
+(require 'perspective)
+(persp-mode)
+#+end_src
+
+  Add support for name and body function setting up perspective
+
+#+begin_src emacs-lisp
+(defmacro custom-persp (name &rest body)
+       `(let ((initialize (not (gethash ,name perspectives-hash)))
+              (current-perspective persp-curr))
+          (persp-switch ,name)
+          (when initialize ,@body)
+          (setq persp-last current-perspective)))
+#+end_src
+
+** autovurder
+
+#+begin_src emacs-lisp
+(defun custom-persp/autovurder ()
+  (interactive)
+  (custom-persp "autovurder"
+;;; todo.org frame
+;;; testing terminal frame
+;;; script/server running frame
+;;; javascript code frame
+;;; after server running, launch browser with localhost:9393
+  (find-file "/home/thomanil/versioncontrolled/public/autovurdering/autovurdering.rb")))
+#+end_src
+
+** gitorious master
+
+#+begin_src emacs-lsisp
+(defun custom-persp/mainline-master ()
+  (interactive)
+  (custom-persp "mainline-master"
+  (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
+#+end_src
+
+** gitorious gluster
+
+#+begin_src emacs-lisp
+(defun custom-persp/gluster ()
+  (interactive)
+  (custom-persp "gluster"
+  (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
+#+end_src
+
+** gitorious next
+
+#+begin_src emacs-lisp
+(defun custom-persp/mainline-next ()
+  (interactive)
+  (custom-persp "mainline-next"
+  (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
 #+end_src
 
 * Support stuff for my workflow
@@ -721,14 +792,6 @@ file etc for a new orgfile:
 (global-set-key (kbd "C-p") 'browse-orgletters)
 #+end_src
 
-** Set my gitorious clone as current working dir
-
-#+begin_src emacs-lisp
-(defun thomas-mainline ()
-  (interactive)
-  (cd "~/gitorious/thomas-mainline/"))
-#+end_src
-
 ** Always kill trailing whitespace on file saves
 #+begin_src emacs-lisp
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -796,6 +859,19 @@ Using my tweetskim gem (gem install tweetskim) for this.
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 #+end_src
 
+** Edit my /etc/hosts file as sudo
+   #+begin_src emacs-lisp
+
+(defun sudo-find-file (file-name)
+  "Like find file, but opens the file as root."
+  (interactive "FSudo Find File: ")
+  (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+    (find-file tramp-file-name)))
+
+(defun edit-hostsfile ()
+  (interactive)
+  (sudo-find-file "/etc/hosts"))
+   #+end_src
 ** Move lines and regions up and down with M-down|up
 
 Move current active line or marked region up and down using M-up, M-down.
@@ -862,4 +938,16 @@ Then set it up for my emacs config like so:
 #+begin_src emacs-lisp
 (require 'org-crypt)
 (setq org-crypt-key "thomas@kjeldahlnilsson.net")
+#+end_src
+** Cleanup everything in buffer with one cmd
+#+begin_src emacs-lisp
+   (defun clean-up-buffer ()
+       "Perform housekeeping on the current buffer"
+       (interactive)
+       (save-excursion
+         (whitespace-cleanup)
+         (mark-whole-buffer)
+         (indent-region (point) (mark))))
+
+(global-set-key (kbd "<backtab>") 'clean-up-buffer)
 #+end_src

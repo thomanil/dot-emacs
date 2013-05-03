@@ -22,7 +22,7 @@
 (require 'org-install)
 (require 'ob-tangle))
 
-;; Load any libraries (anything in extras/*.org) first, so 
+;; Load any libraries (anything in extras/*.org) first, so
 ;; we can use it in our own files
 (setq thomanil-extras-dir (expand-file-name "extras" dotfiles-dir))
 (setq thomanil-extras-files (directory-files thomanil-extras-dir t "\\.org$"))
@@ -40,3 +40,4 @@ code blocks which can be tangled"
 
 ;; load up all literate org-mode files in this directory
 (mapc #'org-babel-load-file (directory-files dotfiles-dir t "\\.org$"))
+(put 'upcase-region 'disabled nil)
