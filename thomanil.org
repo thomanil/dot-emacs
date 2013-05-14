@@ -243,6 +243,27 @@ Quickly jump anywhere in buffer
 (require 'expand-region)
 #+end_src
 
+** Multiple-cursors
+
+Magnars awesome multiple cursor stuff!
+https://github.com/magnars/multiple-cursors.el
+
+#+begin_src emacs-lisp
+(require 'multiple-cursors)
+
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+#+end_src
+
+** String-edit
+
+   #+begin_src emacs-lisp
+   (require 'string-edit)
+   #+end_src
+
 ** Ruby-mode
 #+begin_src emacs-lisp
   (require 'inf-ruby)
@@ -479,6 +500,10 @@ system ('sudo apt-get install ttf-inconsolata')
 (setq org-export-html-postamble nil)
 #+end_src
 
+** Get ansi color in terminals
+#+begin_src emacs-lisp
+    (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+#+end_src
 * Keybindings
 ** Misc custom keybindings
 I try to just use custom keybindings as far as possible, so I won't be
@@ -571,7 +596,58 @@ only better!
           (setq persp-last current-perspective)))
 #+end_src
 
-** autovurder
+** gitorious gluster
+
+#+begin_src emacs-lisp
+(defun custom-persp/gluster ()
+  (interactive)
+  (custom-persp "gluster"
+		(find-file "/home/thomanil/gitorious/puppet-recipes/modules/gitorious/files/customizations/gluster_staging/plugin/init.rb")
+
+		(split-window-right nil)
+		(other-window 1)
+
+                (get-buffer-create "*server*")
+                (switch-to-buffer "*server*")
+
+		(split-window-below nil)
+		(other-window 1)
+
+                (get-buffer-create "*autotest*")
+                (switch-to-buffer "*autotest*")
+
+                (split-window-below nil)
+		(other-window 1)
+
+                (get-buffer-create "*onchange*")
+                (switch-to-buffer "*onchange*")
+
+                (cd "/home/thomanil/gitorious/gluster-mainline-2.3-with-customizations")
+		(async-shell-command "bundle exec script/server" "*server*")
+                (async-shell-command "script/synch-from-puppet-repos.sh" "*onchange*")
+                (cd "/home/thomanil/gitorious/puppet-recipes/modules/gitorious/files/customizations/gluster_staging/plugin")
+                (async-shell-command "keeptesting -p . 'Error|Failure' 'rake test'" "*autotest*")))
+#+end_src
+
+** TODO gitorious master
+
+#+begin_src emacs-lsisp
+(defun custom-persp/mainline-master ()
+  (interactive)
+  (custom-persp "mainline-master"
+  (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
+#+end_src
+
+** TODO gitorious next
+
+#+begin_src emacs-lisp
+(defun custom-persp/mainline-next ()
+  (interactive)
+  (custom-persp "mainline-next"
+  (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
+#+end_src
+
+** TODO autovurder
 
 #+begin_src emacs-lisp
 (defun custom-persp/autovurder ()
@@ -587,36 +663,9 @@ only better!
 ))
 #+end_src
 
-** gitorious master
-
-#+begin_src emacs-lsisp
-(defun custom-persp/mainline-master ()
-  (interactive)
-  (custom-persp "mainline-master"
-  (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
-#+end_src
-
-** gitorious gluster
-
-#+begin_src emacs-lisp
-(defun custom-persp/gluster ()
-  (interactive)
-  (custom-persp "gluster"
-  (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
-#+end_src
-
-** gitorious next
-
-#+begin_src emacs-lisp
-(defun custom-persp/mainline-next ()
-  (interactive)
-  (custom-persp "mainline-next"
-  (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
-#+end_src
-
-** onchange
-** keeptesting
-** blogging
+** TODO onchange
+** TODO keeptesting
+** TODO blogging
    blog post list
    launch local server?
    open browser
@@ -967,4 +1016,19 @@ Then set it up for my emacs config like so:
          (indent-region (point) (mark))))
 
 (global-set-key (kbd "<backtab>") 'clean-up-buffer)
+#+end_src
+** I sometimes want to rename both the file and buffer I'm working on
+#+begin_src emacs-lisp
+(defun rename-file-and-buffer ()
+  "Rename the current buffer and file it is visiting."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (message "Buffer is not visiting a file!")
+      (let ((new-name (read-file-name "New name: " filename)))
+        (cond
+         ((vc-backend filename) (vc-rename-file filename new-name))
+         (t
+          (rename-file filename new-name t)
+          (set-visited-file-name new-name t t)))))))
 #+end_src
