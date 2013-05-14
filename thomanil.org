@@ -629,6 +629,30 @@ only better!
                 (async-shell-command "keeptesting -p . 'Error|Failure' 'rake test'" "*autotest*")))
 #+end_src
 
+** autovurder
+
+#+begin_src emacs-lisp
+(defun custom-persp/autovurder ()
+  (interactive)
+  (custom-persp "autovurder"
+		(find-file "/home/thomanil/versioncontrolled/public/autovurdering/todo.org")
+
+		(split-window-right nil)
+		(other-window 1)
+
+                (get-buffer-create "*server*")
+                (switch-to-buffer "*server*")
+
+		(split-window-below nil)
+		(other-window 1)
+
+                (get-buffer-create "*autotest*")
+                (switch-to-buffer "*autotest*")
+
+		(async-shell-command "scripts/server" "*server*")
+                (async-shell-command "keeptesting -p . 'Error|Failure' 'rake test'" "*autotest*")))
+#+end_src
+
 ** TODO gitorious master
 
 #+begin_src emacs-lsisp
@@ -645,22 +669,6 @@ only better!
   (interactive)
   (custom-persp "mainline-next"
   (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
-#+end_src
-
-** TODO autovurder
-
-#+begin_src emacs-lisp
-(defun custom-persp/autovurder ()
-  (interactive)
-  (custom-persp "autovurder"
-  (find-file "/home/thomanil/versioncontrolled/public/autovurdering/todo.org")
-;;; todo.org frame
-;;; testing terminal frame
-;;; script/server running frame
-;;; javascript code frame
-;;; after server running, launch browser with localhost:9393
-;;  (find-file "/home/thomanil/versioncontrolled/public/autovurdering/autovurdering.rb")
-))
 #+end_src
 
 ** TODO onchange
@@ -718,6 +726,8 @@ phone.
 
 TODO: set up post-commit hook in orgfile repo, call export-my-orgfiles
 via emacs batch mode on every commit.
+
+TODO: use my org2html binary in orgtools gem instead of this
 
 #+begin_src emacs-lisp
 (package-initialize)
