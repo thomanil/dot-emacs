@@ -670,7 +670,30 @@ only better!
 	        (async-shell-command "scripts/server" "*server*")
                 (async-shell-command "keeptesting -p . 'Error|Failure' 'rake test'" "*autotest*")))
 #+end_src
+** starbridge
 
+#+begin_src emacs-lisp
+(defun custom-persp/starbridge ()
+  (interactive)
+  (custom-persp "starbridge"
+		(dired "/home/thomanil/versioncontrolled/private/starbridge")
+
+		(split-window-right nil)
+		(other-window 1)
+
+                (get-buffer-create "*server*")
+                (switch-to-buffer "*server*")
+
+		(split-window-below nil)
+		(other-window 1)
+
+                (get-buffer-create "*autotest*")
+                (switch-to-buffer "*autotest*")
+
+                (cd "/home/thomanil/versioncontrolled/private/starbridge")
+	        (async-shell-command "scripts/server" "*server*")
+                (async-shell-command "keeptesting -p . 'test failed|SyntaxError|errors' 'rake test lint'" "*autotest*")))
+#+end_src
 ** TODO gitorious master
 
 #+begin_src emacs-lsisp
