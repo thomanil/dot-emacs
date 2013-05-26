@@ -1,0 +1,7 @@
+#name : if
+#group :
+# --
+
+if (${1:cond}) {
+ $0
+};

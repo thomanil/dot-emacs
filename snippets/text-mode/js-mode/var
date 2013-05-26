@@ -1,0 +1,5 @@
+#name : var
+#group :
+# --
+
+var ${1:name} = $0;

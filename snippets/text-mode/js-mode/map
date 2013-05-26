@@ -1,0 +1,6 @@
+#name : map
+#group :
+# --
+_.map(${1:collection}, function(${2:element}){
+    $0
+});
