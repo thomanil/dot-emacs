@@ -673,10 +673,10 @@ only better!
 ** starbridge
 
 #+begin_src emacs-lisp
-(defun custom-persp/starbridge ()
+(defun custom-persp/ssc ()
   (interactive)
-  (custom-persp "starbridge"
-		(dired "/home/thomanil/versioncontrolled/private/starbridge")
+  (custom-persp "ssc"
+		(dired "/home/thomanil/versioncontrolled/private/starshipcrew")
 
 		(split-window-right nil)
 		(other-window 1)
@@ -690,9 +690,9 @@ only better!
                 (get-buffer-create "*autotest*")
                 (switch-to-buffer "*autotest*")
 
-                (cd "/home/thomanil/versioncontrolled/private/starbridge")
+                (cd "/home/thomanil/versioncontrolled/private/starshipcrew")
 	        (async-shell-command "scripts/server" "*server*")
-                (async-shell-command "keeptesting -p . 'test failed|SyntaxError|errors' 'rake test lint'" "*autotest*")))
+                (async-shell-command "keeptesting -p . 'test failed|SyntaxError|errors|Error\:' 'rake test lint'" "*autotest*")))
 #+end_src
 ** TODO gitorious master
 
@@ -712,8 +712,6 @@ only better!
   (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
 #+end_src
 
-** TODO onchange
-** TODO keeptesting
 ** TODO blogging
    blog post list
    launch local server?
@@ -961,7 +959,7 @@ Using my tweetskim gem (gem install tweetskim) for this.
   (switch-to-buffer "*tweets*")
   (erase-buffer)
   (insert "new tweets\n---\n\n")
-  (insert (shell-command-to-string "tweetskim -n 200 -m | grep -v Avdi | grep -v Braithwaite | sed G | fold -sw 80" ))
+  (insert (shell-command-to-string "tweetskim -n 200 -m | sed G | fold -sw 80" ))
   (local-set-key [mouse-1] 'browse-url-at-mouse)
   (local-set-key (kbd "q") 'goto-last-buffer))
 #+end_src
