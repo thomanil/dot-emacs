@@ -386,6 +386,37 @@ ffip is autoloaded when invoked the first time.
      '(speedbar-show-unknown-files t)
      '(speedbar-update-flag t))
    #+end_src
+
+** Web-mode
+   An actual major mode that works html and templates? Let's get
+   that!
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
+
+(define-key web-mode-map (kbd "C-n") 'web-mode-tag-match)
+(define-key web-mode-map (kbd "C-f") 'web-mode-fold-or-unfold)
+
+(set-face-attribute 'web-mode-html-tag-face nil :foreground "DarkViolet")
+
+#+END_SRC
+** Zen coding
+
+   Absolutely amazing. By entering CSS selectors like
+   =html>head+body>div.content>ul#navigation>li.item*4= and caling
+   =zencoding-expand-line= you end up with:
+   - an interactive preview of the markup that would be rendered
+   - Pressing =RET= will insert it into the buffer.
+
+   I made a short [[http://ascii.io/a/3330][asciicast]] about it. Let's activate it automatically
+   for any SGML modes
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'sgml-mode-hook 'zencoding-mode)
+(add-hook 'web-mode-hook 'zencoding-mode)
+#+END_SRC
+
 * Adjust basic look, feel & behavior of Emacs
 ** Use the pleasant, low-contrast Solarized color theme
    Emacs 24 has built-in theming support.
@@ -585,6 +616,20 @@ terminal etc where meta keys are mapped/handled in unpredictable ways.
 #+begin_src emacs-lisp
 (define-key global-map (kbd "C-+") 'text-scale-increase)
 (define-key global-map (kbd "C--") 'text-scale-decrease)
+#+end_src
+
+* Package management
+#+begin_src emacs-lisp
+(require 'package)
+
+(package-initialize)
+
+(add-to-list 'package-archives
+    '("marmalade" .
+      "http://marmalade-repo.org/packages/"))
+
+(add-to-list 'package-archives
+  '("melpa" . "http://melpa.milkbox.net/packages/") t)
 #+end_src
 
 * Perspectives
