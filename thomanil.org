@@ -434,7 +434,7 @@ ffip is autoloaded when invoked the first time.
    To install a theme, use package-install.
 
 #+begin_src emacs-lisp
-(load-theme 'solarized-dark t)
+(load-theme 'solarized-light t)
 #+end_src
 
 ** I like autopaired quotes, parens etc, so turn on electric-pair-mode
@@ -678,12 +678,46 @@ only better!
 
                 (cd "/home/thomanil/gitorious/gluster-mainline-2.3-with-customizations")
 		(async-shell-command "bundle exec script/server" "*server*")
-                (async-shell-command "script/synch-from-puppet-repos.sh" "*onchange*")
+                (async-shell-command "keep-gluster-local-synched-with-staging-plugin.sh" "*onchange*")
                 (cd "/home/thomanil/gitorious/puppet-recipes/modules/gitorious/files/customizations/gluster_staging/plugin")
                 (async-shell-command "keeptesting -p . 'Error|Failure' 'rake test'" "*autotest*")))
 #+end_src
 
-** autovurder
+** javascript allonge
+#+begin_src emacs-lisp
+(defun custom-persp/allonge ()
+  (interactive)
+  (custom-persp "allonge"
+		(find-file "/home/thomanil/Dropbox/studies/javascript-allonge/experiments.js")
+
+		(split-window-right nil)
+		(other-window 1)
+
+                (get-buffer-create "*eval*")
+                (switch-to-buffer "*eval*")
+
+                (cd "/home/thomanil/Dropbox/studies/javascript-allonge")
+	        (ansi-term "zsh" "*eval*")))
+#+end_src
+
+** TODO gitorious next
+
+#+begin_src emacs-lisp
+(defun custom-persp/mainline-next ()
+  (interactive)
+  (custom-persp "mainline-next"
+  (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
+#+end_src
+** TODO gitorious master
+
+#+begin_src emacs-lsisp
+(defun custom-persp/mainline-master ()
+  (interactive)
+  (custom-persp "mainline-master"
+  (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
+#+end_src
+
+** TODO autovurder
 
 #+begin_src emacs-lisp
 (defun custom-persp/autovurder ()
@@ -707,7 +741,8 @@ only better!
 	        (async-shell-command "scripts/server" "*server*")
                 (async-shell-command "keeptesting -p . 'Error|Failure' 'rake test'" "*autotest*")))
 #+end_src
-** starbridge
+** TODO makerjournal
+** TODO starshipcrew
 
 #+begin_src emacs-lisp
 (defun custom-persp/ssc ()
@@ -731,23 +766,6 @@ only better!
 	        (async-shell-command "scripts/server" "*server*")
                 (async-shell-command "keeptesting -p . 'test failed|SyntaxError|errors|Error\:' 'rake test lint'" "*autotest*")))
 #+end_src
-** TODO gitorious master
-
-#+begin_src emacs-lsisp
-(defun custom-persp/mainline-master ()
-  (interactive)
-  (custom-persp "mainline-master"
-  (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
-#+end_src
-
-** TODO gitorious next
-
-#+begin_src emacs-lisp
-(defun custom-persp/mainline-next ()
-  (interactive)
-  (custom-persp "mainline-next"
-  (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
-#+end_src
 
 ** TODO blogging
    blog post list
@@ -762,7 +780,7 @@ I need to remember/keep track of.
 #+begin_src emacs-lisp
 (defun my-orgfiles ()
   (interactive)
-  (dired "~/versioncontrolled/private/orgfiles/"))
+  (dired "~/Dropbox/orgfiles/"))
 
 (global-set-key (kbd "C-x g") 'my-orgfiles)
 #+end_src
@@ -776,8 +794,8 @@ file etc for a new orgfile:
 #+begin_src emacs-lisp
 (defun new-orgletter ()
   (interactive)
-  (let ((name (concat "~/Dropbox/misc/tmp-orgfiles/" (read-string "New org file: " "tmp.org"))))
-    (find-file "~/Dropbox/misc/tmp-orgfiles/_template.org")
+  (let ((name (concat "~/Dropbox/orgfiles/tmp-orgfiles/" (read-string "New org file: " "tmp.org"))))
+    (find-file "~/Dropbox/orgfiles/tmp-orgfiles/_template.org")
     (write-file name)))
 
 (global-set-key (kbd "C-o") 'new-orgletter)
@@ -787,7 +805,7 @@ file etc for a new orgfile:
 #+begin_src emacs-lisp
 (defun browse-orgletters ()
   (interactive)
-  (dired "~/Dropbox/misc/tmp-orgfiles/"))
+  (dired "~/Dropbox/orgfiles/tmp-orgfiles/"))
 
 (global-set-key (kbd "C-p") 'browse-orgletters)
 #+end_src
@@ -814,9 +832,9 @@ TODO: use my org2html binary in orgtools gem instead of this
   "Push all the orgfiles to html, so I can easily read them via Dropbox on Android"
   (interactive)
   (org-publish (quote
-	      ("orgfiles" :base-directory "~/versioncontrolled/private/orgfiles"
+	      ("orgfiles" :base-directory "~/Dropbox/orgfiles"
 	       :base-extension "org"
-	       :publishing-directory "~/versioncontrolled/private/orgfiles/exported-html"
+	       :publishing-directory "~/Dropbox/orgfiles/exported-html"
 	       :htmlized-source t
 	       :recursive t
 	       :table-of-contents nil
