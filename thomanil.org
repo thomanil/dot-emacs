@@ -400,6 +400,10 @@ ffip is autoloaded when invoked the first time.
   '(add-to-list 'ffip-patterns "*.yml"))
 (eval-after-load 'find-file-in-project
   '(add-to-list 'ffip-patterns "*.erb"))
+(eval-after-load 'find-file-in-project
+  '(add-to-list 'ffip-patterns "*.java"))
+(eval-after-load 'find-file-in-project
+  '(add-to-list 'ffip-patterns "*.xml"))
 #+end_src
 
 ** Clojure
@@ -700,6 +704,7 @@ only better!
 	        (ansi-term "zsh" "*eval*")))
 #+end_src
 
+** TODO habitboss
 ** TODO gitorious next
 
 #+begin_src emacs-lisp
@@ -772,6 +777,7 @@ only better!
    launch local server?
    open browser
 
+
 * Day-to-day orgfiles
 ** Have all my orgfiles handy
 I use orgfiles for my projects, cheatsheets, and assorted other things
@@ -794,8 +800,8 @@ file etc for a new orgfile:
 #+begin_src emacs-lisp
 (defun new-orgletter ()
   (interactive)
-  (let ((name (concat "~/Dropbox/orgfiles/tmp-orgfiles/" (read-string "New org file: " "tmp.org"))))
-    (find-file "~/Dropbox/orgfiles/tmp-orgfiles/_template.org")
+  (let ((name (concat "~/Dropbox/orgfiles/2_tmp/" (read-string "New org file: " "tmp.org"))))
+    (find-file "~/Dropbox/orgfiles/2_tmp/_template.org")
     (write-file name)))
 
 (global-set-key (kbd "C-o") 'new-orgletter)
@@ -808,43 +814,6 @@ file etc for a new orgfile:
   (dired "~/Dropbox/orgfiles/tmp-orgfiles/"))
 
 (global-set-key (kbd "C-p") 'browse-orgletters)
-#+end_src
-
-** Pushing my main orgfiles to mobile-friendly html
-
-I use orgfiles for a lot of todo lists, cheatsheets etc. I also want
-to access those on the go (read-only is fine). Since there doesn't
-seem to be straight forward way to read actual .org files on Android I
-just export them all to html, so I can get at them via Dropbox on my
-phone.
-
-TODO: set up post-commit hook in orgfile repo, call export-my-orgfiles
-via emacs batch mode on every commit.
-
-TODO: use my org2html binary in orgtools gem instead of this
-
-#+begin_src emacs-lisp
-(package-initialize)
-(require 'org-publish)
-(require 'htmlize)
-
-(defun export-my-orgfiles ()
-  "Push all the orgfiles to html, so I can easily read them via Dropbox on Android"
-  (interactive)
-  (org-publish (quote
-	      ("orgfiles" :base-directory "~/Dropbox/orgfiles"
-	       :base-extension "org"
-	       :publishing-directory "~/Dropbox/orgfiles/exported-html"
-	       :htmlized-source t
-	       :recursive t
-	       :table-of-contents nil
-	       :html-preamble nil
-	       :html-postamble nil
-	       :section-numbers nil
-	       :publishing-function org-publish-org-to-html
-	       :headline-levels 3
-	       :html-extension "html"
-	       :body-only nil)) nil))
 #+end_src
 
 * Blogging workflow
