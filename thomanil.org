@@ -129,7 +129,22 @@ Make yasnippet play nice with org-mode
         ido-max-prospects 10)
 #+end_src
 
-     Also load ido-ubiquitous-mode to make sure we use Ido nearly everywhere
+
+#+begin_src emacs-lisp
+;; Display ido results vertically, rather than horizontally
+(setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
+
+(defun ido-disable-line-truncation () (set (make-local-variable 'truncate-lines) nil))
+  (add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
+  (defun ido-define-keys () ;; C-n/p is more intuitive in vertical layout
+    (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
+    (define-key ido-completion-map (kbd "C-p") 'ido-prev-match))
+  (add-hook 'ido-setup-hook 'ido-define-keys)
+
+#+end_src
+
+
+    Also load ido-ubiquitous-mode to make sure we use Ido nearly everywhere
 
 #+begin_src emacs-lisp
 (require 'ido-ubiquitous)
@@ -428,6 +443,20 @@ ffip is autoloaded when invoked the first time.
      '(speedbar-show-unknown-files t)
      '(speedbar-update-flag t))
    #+end_src
+** Groovy-mode
+
+   For Android dev, natch.
+
+   #+begin_src emacs-lisp
+  (require 'groovy-mode)
+
+  ;;; use groovy-mode when file ends in .groovy or has #!/bin/groovy at start
+  (autoload 'groovy-mode "groovy-mode" "Major mode for editing Groovy code." t)
+  (add-to-list 'auto-mode-alist '("\.groovy$" . groovy-mode))
+  (add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
+  (add-to-list 'interpreter-mode-alist '("build.gradle" . groovy-mode))
+   #+end_src
+
 * Adjust basic look, feel & behavior of Emacs
 ** Use the pleasant, low-contrast Solarized color theme
    Emacs 24 has built-in theming support.
@@ -438,7 +467,7 @@ ffip is autoloaded when invoked the first time.
    To install a theme, use package-install.
 
 #+begin_src emacs-lisp
-(load-theme 'solarized-light t)
+(load-theme 'solarized-dark t)
 #+end_src
 
 ** I like autopaired quotes, parens etc, so turn on electric-pair-mode
@@ -477,7 +506,10 @@ system ('sudo apt-get install ttf-inconsolata')
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 #+end_src
-
+** Show me the column number please
+#+begin_src emacs-lisp
+   (column-number-mode 1)
+#+end_src
 ** Don't make me say yes or no, y/n will do
 #+begin_src emacs-lisp
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -521,9 +553,10 @@ system ('sudo apt-get install ttf-inconsolata')
 (setq auto-revert-verbose nil)
 #+end_src
 
-** No splash screen please
+** Don't show messages that I don't read
 #+begin_src emacs-lisp
- (setq inhibit-startup-message t)
+  (setq initial-scratch-message "")
+  (setq inhibit-startup-message t)
 #+end_src
 ** Lines should be 80 characters wide, not 72
 #+begin_src emacs-lisp
@@ -704,24 +737,8 @@ only better!
 	        (ansi-term "zsh" "*eval*")))
 #+end_src
 
+** TODO shortcut-web
 ** TODO habitboss
-** TODO gitorious next
-
-#+begin_src emacs-lisp
-(defun custom-persp/mainline-next ()
-  (interactive)
-  (custom-persp "mainline-next"
-  (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
-#+end_src
-** TODO gitorious master
-
-#+begin_src emacs-lsisp
-(defun custom-persp/mainline-master ()
-  (interactive)
-  (custom-persp "mainline-master"
-  (dired "/home/thomanil/gitorious/mainline-master-rails2.3")))
-#+end_src
-
 ** TODO autovurder
 
 #+begin_src emacs-lisp
@@ -777,7 +794,6 @@ only better!
    launch local server?
    open browser
 
-
 * Day-to-day orgfiles
 ** Have all my orgfiles handy
 I use orgfiles for my projects, cheatsheets, and assorted other things
@@ -811,7 +827,7 @@ file etc for a new orgfile:
 #+begin_src emacs-lisp
 (defun browse-orgletters ()
   (interactive)
-  (dired "~/Dropbox/orgfiles/tmp-orgfiles/"))
+  (dired "~/Dropbox/orgfiles/2_tmp/"))
 
 (global-set-key (kbd "C-p") 'browse-orgletters)
 #+end_src
