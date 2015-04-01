@@ -1,18 +1,3 @@
-#+TITLE:     thomanil.org
-#+AUTHOR:    Thomas Kjeldahl Nilsson
-#+EMAIL:     thomas@kjeldahlnilsson.net
-#+DATE:      2012-08-30 Thu
-#+DESCRIPTION: My emacs configuration (based on Marius, Magnars and Christians great setups)
-#+KEYWORDS:
-#+LANGUAGE:  en
-#+OPTIONS:   H:3 num:nil toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
-#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
-#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
-#+EXPORT_SELECT_TAGS: export
-#+EXPORT_EXCLUDE_TAGS: noexport
-#+LINK_UP:
-#+LINK_HOME:
-#+XSLT:
 
 This file is loaded from init.el after any .org files in extras/ This
 is because we want to be able to use libraries from there in this
@@ -72,7 +57,7 @@ bottom.
 (add-to-list 'load-path
              "~/.emacs.d/elpa/yasnippet-0.6.1")
 (require 'yasnippet)
-(yas/initialize)
+;; (yas/initialize)
 (yas/load-directory "~/.emacs.d/snippets")
 
 #+end_src
@@ -112,6 +97,18 @@ Make yasnippet play nice with org-mode
         ido-create-new-buffer 'always
         ido-use-filename-at-point 'guess
         ido-max-prospects 10)
+#+end_src
+
+
+    Enhance ido with the flx-ido package to improve fuzzy matching/sorting
+#+begin_src emacs-lisp
+(require 'flx-ido)
+(ido-mode 1)
+(ido-everywhere 1)
+(flx-ido-mode 1)
+;; disable ido faces to see flx highlights.
+(setq ido-enable-flex-matching t)
+(setq ido-use-faces nil)
 #+end_src
 
 
@@ -343,31 +340,6 @@ Great tweaks by Magnar
 
 ** Add wgrep for easy search-replace in grep buffer
    (require 'wgrep)
-** Tweak find-file-in-project behavior
-
-Find-file-in-project (ffip) is a plugin that provides search over
-arbitrary file names within project trees. It considers the closest
-.git file in parent folders from working dir as the project "root".
-
-My tweaks: bump up the limit on number of files it searches through
-(Gitorious has way more than 512 files), and add a few extra file
-extensions like *.yml and *.erb to the patterns it searches for.
-
-ffip is autoloaded when invoked the first time.
-
-#+begin_src emacs-lisp
-(eval-after-load 'find-file-in-project
-  '(setq ffip-limit 10000))
-(eval-after-load 'find-file-in-project
-  '(add-to-list 'ffip-patterns "*.yml"))
-(eval-after-load 'find-file-in-project
-  '(add-to-list 'ffip-patterns "*.erb"))
-(eval-after-load 'find-file-in-project
-  '(add-to-list 'ffip-patterns "*.java"))
-(eval-after-load 'find-file-in-project
-  '(add-to-list 'ffip-patterns "*.xml"))
-#+end_src
-
 ** Clojure mode
 
 #+begin_src emacs-lisp
@@ -423,6 +395,10 @@ ffip is autoloaded when invoked the first time.
   (add-to-list 'interpreter-mode-alist '("build.gradle" . groovy-mode))
    #+end_src
 
+** Projectile
+#+begin_src emacs-lisp
+  (projectile-global-mode)
+#+end_src
 * Adjust basic look, feel & behavior of Emacs
 ** Use the pleasant, low-contrast Solarized color theme
    Emacs 24 has built-in theming support.
@@ -571,7 +547,8 @@ however:
 #+begin_src emacs-lisp
 
 (global-set-key (kbd "<escape>") 'hippie-expand)
-(global-set-key (kbd "M-o") 'find-file-in-project)
+;;(global-set-key (kbd "M-o") 'find-file-in-project) ;; Now using projectile instead of ffip
+(global-set-key (kbd "M-o") 'projectile-find-file)
 (global-set-key (kbd "M-r") 'rgrep)
 (global-set-key (kbd "M-f") 'find-dired)
 (global-set-key (kbd "C-f") 'ido-goto-symbol)
