@@ -18,9 +18,10 @@
        (load-path (append (list org-dir org-contrib-dir)
                           (or load-path nil))))
 
-;; load up Org-mode and Org-babel
-(require 'org-install)
-(require 'ob-tangle))
+  ;; load up Org-mode and Org-babel
+  (require 'org-install)
+  (require 'ob-tangle)
+  )
 
 ;; Load any libraries (anything in extras/*.org) first, so
 ;; we can use it in our own files

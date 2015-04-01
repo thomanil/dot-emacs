@@ -77,8 +77,8 @@ bottom.
    Let's activate it automatically for any SGML modes
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'sgml-mode-hook 'zencoding-mode)
-(add-hook 'web-mode-hook 'zencoding-mode)
+;;; (add-hook 'sgml-mode-hook 'zencoding-mode)
+;;; (add-hook 'web-mode-hook 'zencoding-mode)
 #+END_SRC
 
 ** YASnippet
@@ -424,8 +424,8 @@ ffip is autoloaded when invoked the first time.
 ** Clojure
 
 #+begin_src emacs-lisp
-(require 'clojure-mode)
-(require 'nrepl)
+;;(require 'clojure-mode)
+;;(require 'nrepl)
 #+end_src
 
 ** Speedbar
@@ -453,8 +453,42 @@ ffip is autoloaded when invoked the first time.
   ;;; use groovy-mode when file ends in .groovy or has #!/bin/groovy at start
   (autoload 'groovy-mode "groovy-mode" "Major mode for editing Groovy code." t)
   (add-to-list 'auto-mode-alist '("\.groovy$" . groovy-mode))
+  (add-to-list 'auto-mode-alist '("\.build[.]gradle$" . groovy-mode))
   (add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
   (add-to-list 'interpreter-mode-alist '("build.gradle" . groovy-mode))
+   #+end_src
+
+** Golang mode
+
+   Install go-mode from package list. Current go mode canonical home
+   is https://github.com/dominikh/go-mode.el.
+
+   Start go-mode for .go files, and run go fmt for every save in file:
+
+   #+begin_src emacs-lisp
+   (add-to-list 'auto-mode-alist '("\.go$" . go-mode))
+   (add-hook 'before-save-hook 'gofmt-before-save)
+   #+end_src
+
+   Run go compilation to surface errors on every save, using goflymake:
+   (https://github.com/dougm/goflymake).
+
+   It depends on a go project being present in the environment. First
+   install it in your local go workspace:
+
+   # go get -u github.com/dougm/goflymake
+
+   Also install fly-check via package-install.
+
+   Now we have what we need for our emacs setup:
+
+   #+begin_src emacs-lisp
+   (add-to-list 'load-path "~/go/src/github.com/dougm/goflymake/")
+   ;;;(require 'go-flymake)
+   ;;;(require 'go-flycheck)
+
+   ;;;(add-hook 'go-mode-hook 'flycheck-mode)
+
    #+end_src
 
 * Adjust basic look, feel & behavior of Emacs
@@ -849,7 +883,6 @@ site locally by loading the index.html file.
 When I want to update the actual site I'll generate the blog, then
 "M-x blog-deploy" to rsync the changes to my site.
 
-
 ** setup publish stuff (TODO:cleanup)
 #+begin_src emacs-lisp
   (require 'htmlize)
@@ -1121,3 +1154,9 @@ Then set it up for my emacs config like so:
           (rename-file filename new-name t)
           (set-visited-file-name new-name t t)))))))
 #+end_src
+** Make sure magit finds git on os x
+   #+begin_src emacs-lisp
+(when (equal system-type 'darwin)
+  (setenv "PATH" (concat "/usr/local/git/bin:/usr/local/bin:" (getenv "PATH")))
+  (push "/usr/local/git/bin" exec-path))
+   #+end_src
