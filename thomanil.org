@@ -66,21 +66,6 @@ bottom.
 (set-face-attribute 'web-mode-html-tag-face nil :foreground "DarkViolet")
 
 #+END_SRC
-** Zen coding
-
-   Absolutely amazing. By entering CSS selectors like
-   =html>head+body>div.content>ul#navigation>li.item*4= and calling
-   =zencoding-expand-line= you end up with:
-   - an interactive preview of the markup that would be rendered
-   - Pressing =RET= will insert it into the buffer.
-
-   Let's activate it automatically for any SGML modes
-
-#+BEGIN_SRC emacs-lisp
-;;; (add-hook 'sgml-mode-hook 'zencoding-mode)
-;;; (add-hook 'web-mode-hook 'zencoding-mode)
-#+END_SRC
-
 ** YASnippet
 
 #+begin_src emacs-lisp
@@ -247,21 +232,6 @@ No textmate required
 (add-to-list 'auto-mode-alist '("\\.mdown$" . markdown-mode))
 #+end_src
 
-** Ace-jump-mode
-
-Quickly jump anywhere in buffer
-
-#+begin_src emacs-lisp
-(define-key global-map (kbd "C-ø") 'ace-jump-mode)
-#+end_src
-
-** Puppet-mode
-    We need puppet-mode for puppet manifests
-#+begin_src emacs-lisp
-(require 'puppet-mode)
-(add-to-list 'auto-mode-alist '("\\.pp$" . puppet-mode))
-#+end_src
-
 ** Use the simplest default mode in RE-builder
 #+begin_src emacs-lisp
 (require 're-builder)
@@ -285,29 +255,6 @@ Quickly jump anywhere in buffer
 
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-x m") 'magit-status)
-#+end_src
-
-** Expand-region
-    Lets you do wonderful things with regions.
-#+begin_src emacs-lisp
-(add-to-list 'load-path (concat dotfiles-dir "contrib/expand-region"))
-(require 'expand-region)
-
-
-#+end_src
-
-** Multiple-cursors
-
-Magnars awesome multiple cursor stuff!
-https://github.com/magnars/multiple-cursors.el
-
-#+begin_src emacs-lisp
-(require 'multiple-cursors)
-
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 #+end_src
 
 ** String-edit
@@ -421,42 +368,12 @@ ffip is autoloaded when invoked the first time.
   '(add-to-list 'ffip-patterns "*.xml"))
 #+end_src
 
-** Clojure
+** Clojure mode
 
 #+begin_src emacs-lisp
 ;;(require 'clojure-mode)
 ;;(require 'nrepl)
 #+end_src
-
-** Speedbar
-   IDE/textmate-style file-tree tray
-   Start with "M-x speedbar"
-
-   Small tweaks:
-   - I want to see all files, whether they're recognized as known file type or not by speedbar.
-   - Put speedbar frame on left by default, like most IDEs
-   - Auto-update speedbar buffer/frame
-
-   #+begin_src emacs-lisp
-   (custom-set-variables
-     '(speedbar-default-position (quote left))
-     '(speedbar-show-unknown-files t)
-     '(speedbar-update-flag t))
-   #+end_src
-** Groovy-mode
-
-   For Android dev, natch.
-
-   #+begin_src emacs-lisp
-  (require 'groovy-mode)
-
-  ;;; use groovy-mode when file ends in .groovy or has #!/bin/groovy at start
-  (autoload 'groovy-mode "groovy-mode" "Major mode for editing Groovy code." t)
-  (add-to-list 'auto-mode-alist '("\.groovy$" . groovy-mode))
-  (add-to-list 'auto-mode-alist '("\.build[.]gradle$" . groovy-mode))
-  (add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
-  (add-to-list 'interpreter-mode-alist '("build.gradle" . groovy-mode))
-   #+end_src
 
 ** Golang mode
 
@@ -489,6 +406,21 @@ ffip is autoloaded when invoked the first time.
 
    ;;;(add-hook 'go-mode-hook 'flycheck-mode)
 
+   #+end_src
+
+** Groovy mode
+
+   For Android dev, natch.
+
+   #+begin_src emacs-lisp
+  (require 'groovy-mode)
+
+  ;;; use groovy-mode when file ends in .groovy or has #!/bin/groovy at start
+  (autoload 'groovy-mode "groovy-mode" "Major mode for editing Groovy code." t)
+  (add-to-list 'auto-mode-alist '("\.groovy$" . groovy-mode))
+  (add-to-list 'auto-mode-alist '("\.build[.]gradle$" . groovy-mode))
+  (add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
+  (add-to-list 'interpreter-mode-alist '("build.gradle" . groovy-mode))
    #+end_src
 
 * Adjust basic look, feel & behavior of Emacs
@@ -642,14 +574,9 @@ however:
 (global-set-key (kbd "M-o") 'find-file-in-project)
 (global-set-key (kbd "M-r") 'rgrep)
 (global-set-key (kbd "M-f") 'find-dired)
+(global-set-key (kbd "C-f") 'ido-goto-symbol)
 (global-set-key [f5] 'apply-macro-to-region-lines)
-(global-set-key [f6] 'run-ruby)
-(global-set-key [f7] 'ruby-send-region-and-go)
 (global-set-key (kbd "M-?") 'tags-search)
-(global-set-key (kbd "M-RET") 'complete-tag)
-(global-set-key (kbd "C-x C-i") 'ido-goto-symbol)
-(global-set-key (kbd "C-x l") 'kensei-start)
-(global-set-key (kbd "C-x ø") 'kensei-quit)
 (global-set-key (kbd "C-v") 'eval-buffer)
 (global-set-key (kbd "C-x p") 'persp-switch)
 (global-set-key (kbd "§") 'just-one-space)
@@ -703,14 +630,14 @@ only better!
 
 ** setup the mode
 
-    Load it
+   Load it
 
 #+begin_src emacs-lisp
 (require 'perspective)
 (persp-mode)
 #+end_src
 
-  Add support for name and body function setting up perspective
+   Add support for name and body function setting up perspective
 
 #+begin_src emacs-lisp
 (defmacro custom-persp (name &rest body)
@@ -721,7 +648,7 @@ only better!
           (setq persp-last current-perspective)))
 #+end_src
 
-** gitorious gluster
+** example: gitorious gluster
 
 #+begin_src emacs-lisp
 (defun custom-persp/gluster ()
@@ -754,7 +681,7 @@ only better!
                 (async-shell-command "keeptesting -p . 'Error|Failure' 'rake test'" "*autotest*")))
 #+end_src
 
-** javascript allonge
+** example: javascript allonge
 #+begin_src emacs-lisp
 (defun custom-persp/allonge ()
   (interactive)
@@ -771,65 +698,13 @@ only better!
 	        (ansi-term "zsh" "*eval*")))
 #+end_src
 
-** TODO shortcut-web
-** TODO habitboss
-** TODO autovurder
-
-#+begin_src emacs-lisp
-(defun custom-persp/autovurder ()
-  (interactive)
-  (custom-persp "autovurder"
-		(dired "/home/thomanil/versioncontrolled/public/autovurdering")
-
-		(split-window-right nil)
-		(other-window 1)
-
-                (get-buffer-create "*server*")
-                (switch-to-buffer "*server*")
-
-		(split-window-below nil)
-		(other-window 1)
-
-                (get-buffer-create "*autotest*")
-                (switch-to-buffer "*autotest*")
-
-                (cd "/home/thomanil/versioncontrolled/public/autovurdering")
-	        (async-shell-command "scripts/server" "*server*")
-                (async-shell-command "keeptesting -p . 'Error|Failure' 'rake test'" "*autotest*")))
-#+end_src
-** TODO makerjournal
-** TODO starshipcrew
-
-#+begin_src emacs-lisp
-(defun custom-persp/ssc ()
-  (interactive)
-  (custom-persp "ssc"
-		(dired "/home/thomanil/versioncontrolled/private/starshipcrew")
-
-		(split-window-right nil)
-		(other-window 1)
-
-                (get-buffer-create "*server*")
-                (switch-to-buffer "*server*")
-
-		(split-window-below nil)
-		(other-window 1)
-
-                (get-buffer-create "*autotest*")
-                (switch-to-buffer "*autotest*")
-
-                (cd "/home/thomanil/versioncontrolled/private/starshipcrew")
-	        (async-shell-command "scripts/server" "*server*")
-                (async-shell-command "keeptesting -p . 'test failed|SyntaxError|errors|Error\:' 'rake test lint'" "*autotest*")))
-#+end_src
-
 ** TODO blogging
    blog post list
    launch local server?
    open browser
 
 * Day-to-day orgfiles
-** Have all my orgfiles handy
+** Have my often-used orgfiles handy
 I use orgfiles for my projects, cheatsheets, and assorted other things
 I need to remember/keep track of.
 
@@ -969,27 +844,9 @@ Make updating my emacs config super low threshold.
           "pariatur. Excepteur sint occaecat cupidatat non proident, sunt in\n"
           "culpa qui officia deserunt mollit anim id est laborum."))
 #+end_src
-** Timetracking at my fingertips
-
-I do my timetracking in an org file, and want to jump straight there
-when I need to.
-
-#+begin_src emacs-lisp
-(defun timetracking ()
- (interactive)
- (find-file "~/Dropbox/Gitorious-stuff/administrativt/timelister-thomas.org"))
-#+end_src
-
 ** Always kill trailing whitespace on file saves
 #+begin_src emacs-lisp
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-#+end_src
-** Quick macro to set up for hacking on kensei
-#+begin_src emacs-lisp
-(defun hack-on-kensei ()
-(interactive)
-(find-file "/home/thomanil/versioncontrolled/public/kensei-elisp-package/kensei.el")
-(eval-buffer))
 #+end_src
 ** Convenience function for ERT testing
 
@@ -1001,40 +858,6 @@ when I need to.
   (ert t nil))
 
 (global-set-key (kbd "C-x t") 'ert-test-current-buffer)
-#+end_src
-
-** Start irc with my standard ERC setup
-#+begin_src emacs-lisp
-(defun start-irc-session ()
-  (interactive)
-  (setq erc-autojoin-channels-alist
-          '(("freenode.net" "#linuxrommet" "#idcgitorious" "#emacs")
-            (".*" "#gitorious")))
-
-  (setq erc-hide-list '("JOIN" "PART" "QUIT"))
-
-  (erc :server "irc.freenode.net" :port 6667 :nick "thomanil")
-  (erc :server "irc.linpro.no" :nick "thomanil"))
-#+end_src
-
-** Check my twitter feed
-
-Using my tweetskim gem (gem install tweetskim) for this.
-
-#+begin_src emacs-lisp
-(defun goto-last-buffer ()
-  (interactive)
-  (switch-to-buffer (other-buffer (current-buffer) t)))
-
-(defun tweets ()
-  (interactive)
-  (get-buffer-create "*tweets*")
-  (switch-to-buffer "*tweets*")
-  (erase-buffer)
-  (insert "new tweets\n---\n\n")
-  (insert (shell-command-to-string "tweetskim -n 200 -m | sed G | fold -sw 80" ))
-  (local-set-key [mouse-1] 'browse-url-at-mouse)
-  (local-set-key (kbd "q") 'goto-last-buffer))
 #+end_src
 
 ** Convenience function to explicitly edit files as sudo
@@ -1106,26 +929,6 @@ Cargoculted from EmacsWiki at http://www.emacswiki.org/emacs/MoveText
 
 (global-set-key [M-up] 'move-text-up)
 (global-set-key [M-down] 'move-text-down)
-#+end_src
-** Add orgmode encryption support
-
-Enables encrypting org mode entries with gpg using "M-x
-org-encrypt-entry".
-
-#+begin_src shell
-#Generate like this:
-gpg --gen-key
-#List:
-gpg --list-keys
-# export it, then stick it somewhere safe:
-gpg --export-secret-keys -a  > gpg-private-key
-#+end_src
-
-Then set it up for my emacs config like so:
-
-#+begin_src emacs-lisp
-(require 'org-crypt)
-(setq org-crypt-key "thomas@kjeldahlnilsson.net")
 #+end_src
 ** Cleanup everything in buffer with one cmd
 #+begin_src emacs-lisp
