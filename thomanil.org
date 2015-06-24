@@ -400,6 +400,9 @@ Great tweaks by Magnar
   (projectile-global-mode)
 #+end_src
 ** Elixir and Erlang modes
+
+   Elixir and Erlang. TODO: http://www.erlang.org/doc/apps/tools/erlang_mode_chapter.html
+
    #+begin_src emacs-lisp
   (require 'elixir-mode)
   (require 'erlang)
