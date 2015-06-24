@@ -399,6 +399,11 @@ Great tweaks by Magnar
 #+begin_src emacs-lisp
   (projectile-global-mode)
 #+end_src
+** Elixir and Erlang modes
+   #+begin_src emacs-lisp
+  (require 'elixir-mode)
+  (require 'erlang)
+   #+end_src
 * Adjust basic look, feel & behavior of Emacs
 ** Use the pleasant, low-contrast Solarized color theme
    Emacs 24 has built-in theming support.
