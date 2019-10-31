@@ -439,18 +439,6 @@ Great tweaks by Magnar
 #+begin_src emacs-lisp
 (electric-pair-mode t)
 #+end_src
-** I like the Inconsolata font, set it up.
-The Inconsolata font is an open source monospace font specifically
-designed for programmers. http://levien.com/type/myfonts/inconsolata.html
-
-Depends on having the inconsolata package installed on the underlying
-system ('sudo apt-get install ttf-inconsolata')
-
-#+begin_src emacs-lisp
-(set-default-font "Inconsolata")
-(set-face-attribute 'default nil :height 160)
-#+end_src
-
 ** Get rid of that big ugly toolbar
 #+begin_src emacs-lisp
 (tool-bar-mode 0)
