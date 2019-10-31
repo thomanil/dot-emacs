@@ -390,9 +390,10 @@ Great tweaks by Magnar
   ;;; use groovy-mode when file ends in .groovy or has #!/bin/groovy at start
   (autoload 'groovy-mode "groovy-mode" "Major mode for editing Groovy code." t)
   (add-to-list 'auto-mode-alist '("\.groovy$" . groovy-mode))
+  (add-to-list 'auto-mode-alist '("\.gradle$" . groovy-mode))
   (add-to-list 'auto-mode-alist '("\.build[.]gradle$" . groovy-mode))
   (add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
-  (add-to-list 'interpreter-mode-alist '("build.gradle" . groovy-mode))
+  (add-to-list 'interpreter-mode-alist '("\.gradle$" . groovy-mode))
    #+end_src
 
 ** Projectile
@@ -407,6 +408,20 @@ Great tweaks by Magnar
   (require 'elixir-mode)
   (require 'erlang)
    #+end_src
+** Company mode
+
+   Magical Text completion!
+
+   http://company-mode.github.io/
+
+   Also turn off "downcase by default" behavior for plaintext/dabbrev
+   http://emacs.stackexchange.com/questions/10837/how-to-make-company-mode-be-case-sensitive-on-plain-text
+
+   #+begin_src emacs-lisp
+  (add-hook 'after-init-hook 'global-company-mode)
+  (setq company-dabbrev-downcase nil)
+   #+end_src
+
 * Adjust basic look, feel & behavior of Emacs
 ** Use the pleasant, low-contrast Solarized color theme
    Emacs 24 has built-in theming support.
@@ -529,7 +544,7 @@ system ('sudo apt-get install ttf-inconsolata')
 #+begin_src emacs-lisp
 (when (equal system-type 'darwin)
   (set-face-attribute 'default nil :font "Monaco-16")
-  (set-face-attribute 'default nil :height 160)
+  (set-face-attribute 'default nil :height 140)
   (setq mac-option-modifier 'none)
   (setq mac-command-modifier 'meta)
   (setq ns-function-modifier 'hyper))
@@ -948,3 +963,24 @@ Cargoculted from EmacsWiki at http://www.emacswiki.org/emacs/MoveText
   (setenv "PATH" (concat "/usr/local/git/bin:/usr/local/bin:" (getenv "PATH")))
   (push "/usr/local/git/bin" exec-path))
    #+end_src
+** Make sure cider finds lein on os x
+   #+begin_src emacs-lisp
+(when (equal system-type 'darwin)
+  (setenv "PATH" (concat "/Users/thomanil/Dropbox/scripts:" (getenv "PATH")))
+  (push "/Users/thomanil/Dropbox/scripts" exec-path))
+   #+end_src
+** Unfill function
+
+   #+begin_src emacs-lisp
+    ;;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
+    (defun unfill-paragraph (&optional region)
+      "Takes a multi-line paragraph and makes it into a single line of text."
+      (interactive (progn (barf-if-buffer-read-only) '(t)))
+      (let ((fill-column (point-max))
+            ;; This would override `fill-column' if it's an integer.
+            (emacs-lisp-docstring-fill-column t))
+        (fill-paragraph nil region)))
+
+    ;; Handy key definition
+    (define-key global-map "\M-U" 'unfill-paragraph)
+    #+end_src
