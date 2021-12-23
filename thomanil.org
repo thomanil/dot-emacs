@@ -92,6 +92,16 @@ Make yasnippet play nice with org-mode
 #+begin_src emacs-lisp
 (load-library "ido")
 (ido-mode t)
+
+;; Fix for the warnings
+
+(defvar ido-cur-item nil)
+(defvar ido-default-item nil)
+(defvar ido-cur-list nil)
+(defvar predicate nil)
+(defvar inherit-input-method nil)
+
+
 (setq ido-enable-prefix nil
         ido-enable-flex-matching t
         ido-create-new-buffer 'always
@@ -260,31 +270,6 @@ No textmate required
    (require 'string-edit)
    #+end_src
 
-** Ruby-mode
-#+begin_src emacs-lisp
-  (require 'inf-ruby)
-
-  (setq ruby-deep-indent-paren nil)
-#+end_src
-** RVM
-    Use a usable ruby
-#+begin_src emacs-lisp
-(add-to-list 'load-path (concat dotfiles-dir "contrib/rvm.el"))
-(require 'rvm)
-#+end_src
-** Ruby-mode tweaks
-  Rake files are ruby, too, as are gemspecs, rackup files, etc.
-  #+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
-  (add-to-list 'auto-mode-alist '("\\.thor$" . ruby-mode))
-  (add-to-list 'auto-mode-alist '("\\.gemspec$" . ruby-mode))
-  (add-to-list 'auto-mode-alist '("\\.ru$" . ruby-mode))
-  (add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
-  (add-to-list 'auto-mode-alist '("Thorfile$" . ruby-mode))
-  (add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
-  (add-to-list 'auto-mode-alist '("Capfile$" . ruby-mode))
-  (add-to-list 'auto-mode-alist '("Vagrantfile$" . ruby-mode))
-  #+end_src
 ** Modify rgrep
 
 Great tweaks by Magnar
@@ -347,67 +332,10 @@ Great tweaks by Magnar
 ;;(require 'nrepl)
 #+end_src
 
-** Golang mode
-
-   Install go-mode from package list. Current go mode canonical home
-   is https://github.com/dominikh/go-mode.el.
-
-   Start go-mode for .go files, and run go fmt for every save in file:
-
-   #+begin_src emacs-lisp
-   (add-to-list 'auto-mode-alist '("\.go$" . go-mode))
-   (add-hook 'before-save-hook 'gofmt-before-save)
-   #+end_src
-
-   Run go compilation to surface errors on every save, using goflymake:
-   (https://github.com/dougm/goflymake).
-
-   It depends on a go project being present in the environment. First
-   install it in your local go workspace:
-
-   # go get -u github.com/dougm/goflymake
-
-   Also install fly-check via package-install.
-
-   Now we have what we need for our emacs setup:
-
-   #+begin_src emacs-lisp
-   (add-to-list 'load-path "~/go/src/github.com/dougm/goflymake/")
-   ;;;(require 'go-flymake)
-   ;;;(require 'go-flycheck)
-
-   ;;;(add-hook 'go-mode-hook 'flycheck-mode)
-
-   #+end_src
-
-** Groovy mode
-
-   For Android dev, natch.
-
-   #+begin_src emacs-lisp
-  (require 'groovy-mode)
-
-  ;;; use groovy-mode when file ends in .groovy or has #!/bin/groovy at start
-  (autoload 'groovy-mode "groovy-mode" "Major mode for editing Groovy code." t)
-  (add-to-list 'auto-mode-alist '("\.groovy$" . groovy-mode))
-  (add-to-list 'auto-mode-alist '("\.gradle$" . groovy-mode))
-  (add-to-list 'auto-mode-alist '("\.build[.]gradle$" . groovy-mode))
-  (add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
-  (add-to-list 'interpreter-mode-alist '("\.gradle$" . groovy-mode))
-   #+end_src
-
 ** Projectile
 #+begin_src emacs-lisp
   (projectile-global-mode)
 #+end_src
-** Elixir and Erlang modes
-
-   Elixir and Erlang. TODO: http://www.erlang.org/doc/apps/tools/erlang_mode_chapter.html
-
-   #+begin_src emacs-lisp
-  (require 'elixir-mode)
-  (require 'erlang)
-   #+end_src
 ** Company mode
 
    Magical Text completion!
