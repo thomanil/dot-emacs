@@ -10,3 +10,4 @@ auto-save-list/*
 /extras/setup-testing.el
 /extras/tags.el
 /extras/setup-keybindings.el
+/ido.last

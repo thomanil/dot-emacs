@@ -6,14 +6,7 @@ bottom.
 
 * Set up package system
 
-  Emacs 24 ships with a package system, which is great.
-  Let's enable it:
-
-#+begin_src emacs-lisp
-(package-initialize)
-#+end_src
-
-   and add some more repositories:
+Add some more repositories:
 
 #+begin_src emacs-lisp
 (add-to-list 'package-archives
@@ -325,13 +318,6 @@ Great tweaks by Magnar
 
 ** Add wgrep for easy search-replace in grep buffer
    (require 'wgrep)
-** Clojure mode
-
-#+begin_src emacs-lisp
-;;(require 'clojure-mode)
-;;(require 'nrepl)
-#+end_src
-
 ** Projectile
 #+begin_src emacs-lisp
   (projectile-global-mode)
@@ -550,6 +536,7 @@ I need to remember/keep track of.
 
 (global-set-key (kbd "C-x g") 'my-orgfiles)
 #+end_src
+
 
 ** Make it super smooth to write one-off orgfiles
 
