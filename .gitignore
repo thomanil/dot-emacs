@@ -11,3 +11,4 @@ auto-save-list/*
 /extras/tags.el
 /extras/setup-keybindings.el
 /ido.last
+/projectile-bookmarks.eld
