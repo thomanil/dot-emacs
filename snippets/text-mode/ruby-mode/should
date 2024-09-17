@@ -1,6 +1,0 @@
-#name : should "..." do ... end
-#group : collections
-# --
-should "${describe feature}" do
-  $0
-end

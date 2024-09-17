@@ -1,4 +1,0 @@
-#name : -each
-# --
-(-each ${collection} (lambda (${element})
-	   $0

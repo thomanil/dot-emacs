@@ -1,4 +1,0 @@
-#name : const def template
-# --
-
-(defconst ${name} ${value})$0

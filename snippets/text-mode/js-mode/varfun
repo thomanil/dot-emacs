@@ -1,7 +1,0 @@
-#name : varfun
-#group :
-# --
-
-var ${1:name} = function(${2:arg}){
-    $0
-};

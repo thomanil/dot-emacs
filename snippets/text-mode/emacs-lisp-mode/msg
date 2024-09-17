@@ -1,3 +1,0 @@
-#name : message call template
-# --
-(message "$1")$0

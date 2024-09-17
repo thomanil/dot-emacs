@@ -1,5 +1,0 @@
-#name : if-statement template
-# --
-(if ${condition}
-    ${do}
-    ${else}

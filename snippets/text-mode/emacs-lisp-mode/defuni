@@ -1,6 +1,0 @@
-#name : interactive function template
-# --
-(defun ${name} ()
-  "${doc}"
-  (interactive)
-    $0

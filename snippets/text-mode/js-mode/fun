@@ -1,5 +1,0 @@
-#name : fun
-#group :
-# --
-
-function(${1:arg}){$0}

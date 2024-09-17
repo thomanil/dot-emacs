@@ -1,4 +1,0 @@
-#name : variable def template
-# --
-
-(setq ${name} ${value})$0

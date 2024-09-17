@@ -44,35 +44,6 @@ Add some more repositories:
 (set-face-attribute 'web-mode-html-tag-face nil :foreground "DarkViolet")
 
 #+END_SRC
-** YASnippet
-
-#+begin_src emacs-lisp
-(add-to-list 'load-path
-             "~/.emacs.d/elpa/yasnippet-0.6.1")
-(require 'yasnippet)
-;; (yas/initialize)
-(yas/load-directory "~/.emacs.d/snippets")
-
-#+end_src
-
-Make yasnippet play nice with org-mode
-
-#+begin_src emacs-lisp
-  (add-hook 'org-mode-hook
-                    (lambda ()
-                      (org-set-local 'yas/trigger-key [tab])
-                      (define-key yas/keymap [tab] 'yas/next-field-or-maybe-expand)))
-
-(defun yas/org-very-safe-expand ()
-   (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
-
-(add-hook 'org-mode-hook
-                    (lambda ()
-                        (make-variable-buffer-local 'yas/vtrigger-key)
-                        (setq yas/trigger-key [tab])
-                        (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-                        (define-key yas/keymap [tab] 'yas/next-field)))
-#+end_src
 
 ** Ido
     Ido improves all kind of minibuffer activities:
@@ -536,7 +507,6 @@ I need to remember/keep track of.
 
 (global-set-key (kbd "C-x g") 'my-orgfiles)
 #+end_src
-
 
 ** Make it super smooth to write one-off orgfiles
 
